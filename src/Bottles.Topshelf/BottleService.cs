@@ -1,0 +1,69 @@
+using System;
+using Bottles.Diagnostics;
+using FubuCore;
+
+namespace Bottles.Topshelf
+{
+    public interface IBottleService
+    {
+        void Start();
+        void Stop();
+    }
+
+    public class BottleService : IBottleService
+    {
+        private readonly IActivator _activator;
+        private readonly IPackageLog _log;
+
+        public BottleService(IActivator activator, IPackageLog log)
+        {
+            _activator = activator;
+            _log = log;
+
+            if(!IsBottleService(activator))
+            {
+                throw new ArgumentException("Activator must also implement {0}".ToFormat(typeof(IDeactivator).Name), "activator");
+            }
+        }
+
+        public void Start()
+        {
+            _activator.Activate(new IPackageInfo[0], _log);
+        }
+
+        public void Stop()
+        {
+            _activator.As<IDeactivator>().Deactivate(_log);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (BottleService)) return false;
+            return Equals((BottleService) obj);
+        }
+
+        public bool Equals(BottleService other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return other._activator.GetType() == _activator.GetType();
+        }
+
+        public override int GetHashCode()
+        {
+            return _activator.GetType().GetHashCode();
+        }
+
+        public static bool IsBottleService(Type type)
+        {
+            return type.IsConcreteTypeOf<IActivator>() && type.IsConcreteTypeOf<IDeactivator>();
+        }
+
+        public static bool IsBottleService(IActivator activator)
+        {
+            return IsBottleService(activator.GetType());
+        }
+    }
+}
