@@ -2,7 +2,7 @@
 using FubuTestingSupport;
 using NUnit.Framework;
 
-namespace Bottles.Topshelf.Tests
+namespace Bottles.Services.Tests
 {
     [TestFixture]
     public class IntegratedBottleServiceAggregatorTester

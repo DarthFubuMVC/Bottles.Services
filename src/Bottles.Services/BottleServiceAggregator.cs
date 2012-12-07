@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Bottles.Diagnostics;
 
-namespace Bottles.Topshelf
+namespace Bottles.Services
 {
     public class BottleServiceAggregator : IBootstrapper
     {
-        private readonly IList<BottleService> _services = new List<BottleService>();
+        private readonly IList<IBottleService> _services = new List<IBottleService>();
  
         public IEnumerable<IActivator> Bootstrap(IPackageLog log)
         {

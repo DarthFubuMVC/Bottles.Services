@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Bottles.Topshelf")]
+[assembly: AssemblyTitle("BottleServiceRunner")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Extend Health Inc")]
-[assembly: AssemblyProduct("Bottles.Topshelf")]
+[assembly: AssemblyProduct("BottleServiceRunner")]
 [assembly: AssemblyCopyright("Copyright © Extend Health Inc 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c130b9e8-3a50-4918-82fb-a14823d8b47d")]
+[assembly: Guid("f2495983-01b4-420d-a1fa-b7e39bb22047")]
 
 // Version information for an assembly consists of the following four values:
 //

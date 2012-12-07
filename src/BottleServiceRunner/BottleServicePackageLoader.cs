@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using Bottles;
 using Bottles.Diagnostics;
 using Bottles.PackageLoaders.Assemblies;
 using FubuCore;
 
-namespace Bottles.Topshelf
+namespace BottleServiceRunner
 {
-    public class ServiceBottleLoader : IPackageLoader
+    public class BottleServicePackageLoader : IPackageLoader
     {
         private readonly IFileSystem _fileSystem = new FileSystem();
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Bottles.Diagnostics;
 
-namespace Bottles.Topshelf.Tests
+namespace Bottles.Services.Tests
 {
     public class EmptyBootstrapper : IBootstrapper
     {

@@ -1,7 +1,9 @@
-﻿using System;
+using System;
+using Bottles;
+using Bottles.Services;
 using FubuCore;
 
-namespace Bottles.Topshelf
+namespace BottleServiceRunner
 {
     public class TopshelfPackageFacility : PackageFacility
     {
@@ -10,7 +12,7 @@ namespace Bottles.Topshelf
         public TopshelfPackageFacility()
         {
             Bootstrapper(_aggregator);
-            Loader(new ServiceBottleLoader());
+            Loader(new BottleServicePackageLoader());
         }
 
         public BottleServiceAggregator Aggregator { get { return _aggregator; }}

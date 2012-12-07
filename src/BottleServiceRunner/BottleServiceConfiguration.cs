@@ -1,6 +1,6 @@
-﻿using System.Xml.Serialization;
+using System.Xml.Serialization;
 
-namespace Bottles.Topshelf
+namespace BottleServiceRunner
 {
     [XmlType("service")]
     public class BottleServiceConfiguration
@@ -9,7 +9,7 @@ namespace Bottles.Topshelf
 
         public BottleServiceConfiguration()
         {
-            var defaultValue = typeof (BottleServiceRunner).Name + "Service";
+            var defaultValue = typeof (Bottles.Services.BottleServiceRunner).Name + "Service";
 
             Name = defaultValue;
             DisplayName = defaultValue;

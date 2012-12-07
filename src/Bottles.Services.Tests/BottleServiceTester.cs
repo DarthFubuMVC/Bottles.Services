@@ -5,7 +5,7 @@ using FubuTestingSupport;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Bottles.Topshelf.Tests
+namespace Bottles.Services.Tests
 {
     [TestFixture]
     public class BottleServiceTester

@@ -19,8 +19,8 @@ require 'albacore'
 load "VERSION.txt"
 
 RESULTS_DIR = "results"
-PRODUCT = "Bottles.Topshelf"
-COPYRIGHT = 'Copyright 2012 Bottles.Topshelf. All rights reserved.';
+PRODUCT = "Bottles.Services"
+COPYRIGHT = 'Copyright 2012 Joshua Arnold, Jeremy D. Miller. All rights reserved.';
 COMMON_ASSEMBLY_INFO = 'src/CommonAssemblyInfo.cs';
 BUILD_DIR = File.expand_path("build")
 ARTIFACTS = File.expand_path("artifacts")
@@ -80,7 +80,7 @@ end
 
 desc "Compiles the app"
 task :compile => [:restore_if_missing, :clean, :version] do
-  MSBuildRunner.compile :compilemode => COMPILE_TARGET, :solutionfile => 'src/Bottles.Topshelf.sln', :clrversion => CLR_TOOLS_VERSION
+  MSBuildRunner.compile :compilemode => COMPILE_TARGET, :solutionfile => 'src/Bottles.Services.sln', :clrversion => CLR_TOOLS_VERSION
 
   target = COMPILE_TARGET.downcase
 end

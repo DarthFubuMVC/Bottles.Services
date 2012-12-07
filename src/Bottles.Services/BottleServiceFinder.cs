@@ -5,7 +5,7 @@ using System.Reflection;
 using Bottles.Diagnostics;
 using FubuCore;
 
-namespace Bottles.Topshelf
+namespace Bottles.Services
 {
     public class BottleServiceFinder
     {
@@ -29,7 +29,7 @@ namespace Bottles.Topshelf
             return bootstrappers.Select(x => (IBootstrapper) Activator.CreateInstance(x));
         }
 
-        public static IEnumerable<BottleService> Find(IEnumerable<Assembly> packageAssemblies, IPackageLog log)
+        public static IEnumerable<IBottleService> Find(IEnumerable<Assembly> packageAssemblies, IPackageLog log)
         {
             var bootstrappers = FindBootstrappers(packageAssemblies);
             return bootstrappers

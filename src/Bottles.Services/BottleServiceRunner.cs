@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
-namespace Bottles.Topshelf
+namespace Bottles.Services
 {
     public class BottleServiceRunner
     {
@@ -19,7 +20,8 @@ namespace Bottles.Topshelf
 
         public void Start()
         {
-            _services.Each(x => x.Start());
+            var tasks = _services.Select(x => x.ToTask());
+            tasks.Each(task => task.Start());
         }
 
         public void Stop()

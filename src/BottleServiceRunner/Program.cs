@@ -1,7 +1,7 @@
-﻿using FubuCore;
+using FubuCore;
 using Topshelf;
 
-namespace Bottles.Topshelf
+namespace BottleServiceRunner
 {
     internal static class Program
     {
@@ -21,7 +21,7 @@ namespace Bottles.Topshelf
 
                x.RunAsLocalService();
 
-               x.Service<BottleServiceRunner>(s =>
+               x.Service<Bottles.Services.BottleServiceRunner>(s =>
                {
                     s.ConstructUsing(name => runner);
                     s.WhenStarted(r => r.Start());

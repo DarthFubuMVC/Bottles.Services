@@ -1,13 +1,16 @@
 using System;
+using System.Threading.Tasks;
 using Bottles.Diagnostics;
 using FubuCore;
 
-namespace Bottles.Topshelf
+namespace Bottles.Services
 {
     public interface IBottleService
     {
         void Start();
         void Stop();
+
+        Task ToTask();
     }
 
     public class BottleService : IBottleService
@@ -34,6 +37,11 @@ namespace Bottles.Topshelf
         public void Stop()
         {
             _activator.As<IDeactivator>().Deactivate(_log);
+        }
+
+        public Task ToTask()
+        {
+            return new Task(Start, TaskCreationOptions.LongRunning);
         }
 
         public override bool Equals(object obj)
@@ -64,6 +72,11 @@ namespace Bottles.Topshelf
         public static bool IsBottleService(IActivator activator)
         {
             return IsBottleService(activator.GetType());
+        }
+
+        public static BottleService For(IActivator service)
+        {
+            return new BottleService(service, new PackageLog());
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Bottles.Topshelf
+using Bottles;
+
+namespace BottleServiceRunner
 {
     // TODO -- This gets fancier later
     public class TopshelfApplication
@@ -6,7 +8,7 @@
         private TopshelfPackageFacility _facility;
 
         [SkipOverForProvenance]
-        public BottleServiceRunner Bootstrap()
+        public Bottles.Services.BottleServiceRunner Bootstrap()
         {
             _facility = new TopshelfPackageFacility();
 

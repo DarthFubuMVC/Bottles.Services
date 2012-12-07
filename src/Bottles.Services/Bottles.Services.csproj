@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B36A5083-515D-497D-BEA4-CF2DB8563C2A}</ProjectGuid>
+    <ProjectGuid>{6DF5C92A-94EA-4FF4-9FDD-5DE2B49A6243}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bottles.Topshelf.Tests</RootNamespace>
-    <AssemblyName>Bottles.Topshelf.Tests</AssemblyName>
+    <RootNamespace>Bottles.Services</RootNamespace>
+    <AssemblyName>Bottles.Services</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,35 +30,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bottles">
       <HintPath>..\packages\Bottles.1.0.0.427\lib\Bottles.dll</HintPath>
     </Reference>
     <Reference Include="FubuCore">
       <HintPath>..\packages\FubuCore.1.0.0.217\lib\FubuCore.dll</HintPath>
-    </Reference>
-    <Reference Include="FubuTestingSupport">
-      <HintPath>..\packages\FubuTestingSupport.1.0.0.217\lib\FubuTestingSupport.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.mocks">
-      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="pnunit.framework">
-      <HintPath>..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
-    </Reference>
-    <Reference Include="StructureMap.AutoMocking, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\structuremap.automocking.2.6.3\lib\StructureMap.AutoMocking.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,23 +49,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BottleServiceFinderTester.cs" />
-    <Compile Include="BottleServiceRunnerTester.cs" />
-    <Compile Include="BottleServiceTester.cs" />
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestBootstrappers.cs" />
-    <Compile Include="IntegratedBottleServiceAggregatorTester.cs" />
+    <Compile Include="BottleService.cs" />
+    <Compile Include="BottleServiceFinder.cs" />
+    <Compile Include="BottleServiceRunner.cs" />
+    <Compile Include="BottleServiceAggregator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Bottles.Topshelf\Bottles.Topshelf.csproj">
-      <Project>{6DF5C92A-94EA-4FF4-9FDD-5DE2B49A6243}</Project>
-      <Name>Bottles.Topshelf</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
