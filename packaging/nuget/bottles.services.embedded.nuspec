@@ -17,6 +17,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\src\Bottles.Services.Embedded\bin\release\*.*" target="lib\net40" />
+    <file src="..\..\src\Bottles.Services.Embedded\bin\release\Bottles.Services.Embedded.*" target="lib\net40" />
   </files>
 </package>
