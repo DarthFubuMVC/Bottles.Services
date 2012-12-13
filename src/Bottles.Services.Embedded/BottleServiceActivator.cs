@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bottles.Diagnostics;
-using FubuMVC.Core.Runtime;
+using FubuCore;
 
 namespace Bottles.Services.Embedded
 {
     public class BottleServiceActivator : IActivator, IDisposable
     {
-        private readonly IServiceFactory _services;
+        private readonly IServiceLocator _services;
         private BottleServiceRunner _runner;
 
-        public BottleServiceActivator(IServiceFactory services)
+        public BottleServiceActivator(IServiceLocator services)
         {
             _services = services;
         }
 
-        public IEnumerable<IBottleService> FindServices(IPackageLog log)
+        public virtual IEnumerable<IBottleService> FindServices(IPackageLog log)
         {
-            return _services
-                .GetAll<IActivator>()
-                .Where(BottleService.IsBottleService)
-                .Select(x => new BottleService(x, log))
+            return BottleServiceFinder
+                .FindTypes(PackageRegistry.PackageAssemblies)
+                .Select(type => _services.GetInstance(type).As<IActivator>())
+                .Select(activator => new BottleService(activator, log))
                 .ToList();
         }
 

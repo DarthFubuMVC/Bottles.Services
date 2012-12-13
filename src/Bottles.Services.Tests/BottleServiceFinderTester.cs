@@ -35,5 +35,14 @@ namespace Bottles.Services.Tests
             
             services.ShouldHaveTheSameElementsAs(theService);
         }
+
+        [Test]
+        public void finds_the_service_types()
+        {
+            var types = BottleServiceFinder.FindTypes(theAssemblies);
+            types.Contains(typeof(StubService)).ShouldBeTrue();
+            types.Contains(typeof(RecordingService)).ShouldBeTrue();
+            types.ShouldHaveCount(2);
+        }
     }
 }

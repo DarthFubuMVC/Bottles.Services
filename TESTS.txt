@@ -1,1 +1,2 @@
 Bottles.Services.Tests
+Bottles.Services.Embedded.Tests

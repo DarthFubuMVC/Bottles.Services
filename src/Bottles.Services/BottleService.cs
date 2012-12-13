@@ -69,9 +69,9 @@ namespace Bottles.Services
             return type.IsConcreteTypeOf<IActivator>() && type.IsConcreteTypeOf<IDeactivator>();
         }
 
-        public static bool IsBottleService(IActivator activator)
+        public static bool IsBottleService(object service)
         {
-            return IsBottleService(activator.GetType());
+            return IsBottleService(service.GetType());
         }
 
         public static BottleService For(IActivator service)

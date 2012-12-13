@@ -2,27 +2,29 @@
 using System.Diagnostics;
 using System.Threading;
 using Bottles.Diagnostics;
+using FubuCore;
+using FubuMVC.StructureMap;
 using FubuTestingSupport;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace Bottles.Services.Embedded.Tests
 {
     [TestFixture]
-    public class when_activating_the_bottle_service_activator
+    public class when_activating_the_bottle_service_activator : InteractionContext<BottleServiceActivator>
     {
-        private StubServiceFactory theServices;
         private RecordingService theService;
-        private BottleServiceActivator theActivator;
+        private PackageLog theLog;
 
-        [SetUp]
-        public void SetUp()
+        protected override void beforeEach()
         {
-            theServices = new StubServiceFactory();
             theService = new RecordingService();
-            theServices.Set<IActivator>(theService);
+            theLog = new PackageLog();
 
-            theActivator = new BottleServiceActivator(theServices);
-            theActivator.Activate(new IPackageInfo[0], new PackageLog());
+            Services.PartialMockTheClassUnderTest();
+            ClassUnderTest.Stub(x => x.FindServices(theLog)).Return(new[] {BottleService.For(theService)});
+
+            ClassUnderTest.Activate(new IPackageInfo[0], theLog);
         }
 
         [Test]
@@ -46,7 +48,7 @@ namespace Bottles.Services.Embedded.Tests
             while (clock.ElapsedMilliseconds < timeoutInMilliseconds)
             {
                 Thread.Yield();
-                Thread.Sleep(500);
+                Thread.Sleep(millisecondPolling);
 
                 if (condition()) return;
             }

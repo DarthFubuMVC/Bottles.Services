@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bottles">
-      <HintPath>..\packages\Bottles.1.0.0.428\lib\Bottles.dll</HintPath>
+      <HintPath>..\packages\Bottles.1.0.0.429\lib\Bottles.dll</HintPath>
     </Reference>
     <Reference Include="FubuCore">
       <HintPath>..\packages\FubuCore.1.0.0.218\lib\FubuCore.dll</HintPath>

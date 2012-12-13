@@ -7,25 +7,11 @@ using FubuCore;
 
 namespace Bottles.Services
 {
-    public class BottleServiceFinder
+    public static class BottleServiceFinder
     {
         public static IEnumerable<IBootstrapper> FindBootstrappers(IEnumerable<Assembly> packageAssemblies)
         {
-            var bootstrappers = new List<Type>();
-
-            packageAssemblies.Each(x =>
-            {
-                try
-                {
-                    var types = x.GetExportedTypes();
-                    bootstrappers.AddRange(types.Where(type => type.CanBeCastTo<IBootstrapper>() && type.IsConcreteWithDefaultCtor()));
-                }
-                catch (Exception ex)
-                {
-                    throw new ApplicationException("Unable to find exported types from assembly " + x.FullName, ex);
-                }
-            });
-
+            var bootstrappers = packageAssemblies.FilterTypes(type => type.CanBeCastTo<IBootstrapper>() && type.IsConcreteWithDefaultCtor());
             return bootstrappers.Select(x => (IBootstrapper) Activator.CreateInstance(x));
         }
 
@@ -37,6 +23,31 @@ namespace Bottles.Services
                 .Where(BottleService.IsBottleService)
                 .Select(x => new BottleService(x, log))
                 .ToList();
+        }
+
+        public static IEnumerable<Type> FindTypes(IEnumerable<Assembly> packageAssemblies)
+        {
+            return packageAssemblies.FilterTypes(BottleService.IsBottleService);
+        }
+
+        public static IEnumerable<Type> FilterTypes(this IEnumerable<Assembly> packageAssemblies, Func<Type, bool> predicate)
+        {
+            var filteredTypes = new List<Type>();
+
+            packageAssemblies.Each(x =>
+            {
+                try
+                {
+                    var types = x.GetExportedTypes();
+                    filteredTypes.AddRange(types.Where(predicate));
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException("Unable to find exported types from assembly " + x.FullName, ex);
+                }
+            });
+
+            return filteredTypes;
         }
     }
 }
