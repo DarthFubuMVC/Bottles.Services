@@ -9,15 +9,9 @@ namespace Bottles.Services.Embedded.Tests.Integration
     {
         private InnerService theHostedService;
 
-        protected override void configureContainer(StructureMap.IContainer container)
+        protected override void beforeRunning()
         {
-            theHostedService = new InnerService();
-            container.Configure(x => x.For<InnerService>().Singleton().Use(theHostedService));
-        }
-
-        protected override void initializeBottles()
-        {
-            PackageRegistry.LoadPackages(x => x.Assembly(GetType().Assembly));
+            theHostedService = IntegratedBootstrapper.Service;
         }
 
         [Test]

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading;
-using Bottles.Diagnostics;
-using FubuCore;
-using FubuMVC.StructureMap;
+﻿using Bottles.Diagnostics;
 using FubuTestingSupport;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -32,26 +27,6 @@ namespace Bottles.Services.Embedded.Tests
         {
             Wait.Until(() => theService.Activated);
             theService.Activated.ShouldBeTrue();
-        }
-    }
-
-    // TODO -- Just move this into FubuCore
-    public static class Wait
-    {
-        public static void Until(Func<bool> condition, int millisecondPolling = 500, int timeoutInMilliseconds = 5000)
-        {
-            if (condition()) return;
-
-            var clock = new Stopwatch();
-            clock.Start();
-
-            while (clock.ElapsedMilliseconds < timeoutInMilliseconds)
-            {
-                Thread.Yield();
-                Thread.Sleep(millisecondPolling);
-
-                if (condition()) return;
-            }
         }
     }
 }

@@ -1,10 +1,23 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using Bottles.Diagnostics;
-using Timer = System.Timers.Timer;
 
 namespace Bottles.Services.Embedded.Tests.Integration
 {
+    public class IntegratedBootstrapper : IBootstrapper
+    {
+        public static readonly InnerService Service;
+
+        static IntegratedBootstrapper()
+        {
+            Service = new InnerService();
+        }
+
+        public IEnumerable<IActivator> Bootstrap(IPackageLog log)
+        {
+            yield return new IntegratedActivator(Service);
+        }
+    }
+
     public class IntegratedActivator : IActivator, IDeactivator
     {
         private readonly InnerService _inner;
@@ -21,44 +34,6 @@ namespace Bottles.Services.Embedded.Tests.Integration
 
         public void Deactivate(IPackageLog log)
         {
-        }
-    }
-
-    public class InnerService
-    {
-        private readonly Timer _timer;
-        private readonly ManualResetEvent _reset;
-
-        public InnerService()
-        {
-            _reset = new ManualResetEvent(false);
-            _timer = new Timer(1000)
-            {
-                AutoReset = false
-            };
-
-            _timer.Elapsed += (e, args) => Execute();
-        }
-
-        public bool Ran { get; set; }
-
-        public void Start()
-        {
-            _timer.Start();
-        }
-
-        public void WaitForNextRun()
-        {
-            Ran = false;
-            _reset.Reset();
-            _reset.WaitOne(5000);
-        }
-
-        public void Execute()
-        {
-            Ran = true;
-            _reset.Set();
-            _timer.Start();
         }
     }
 }
