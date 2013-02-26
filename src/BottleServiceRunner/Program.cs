@@ -39,10 +39,6 @@ namespace BottleServiceRunner
 
                 x.StartAutomatically();
             });
-
-
-            Console.WriteLine("Anything to quit");
-            Console.ReadLine();
         }
 
         private static IEnumerable<string> findAssemblies(IEnumerable<string> args)
