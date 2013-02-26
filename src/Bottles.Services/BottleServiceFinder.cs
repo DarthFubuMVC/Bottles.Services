@@ -17,7 +17,10 @@ namespace Bottles.Services
 
         public static IEnumerable<IBottleService> Find(IEnumerable<Assembly> packageAssemblies, IPackageLog log)
         {
-            var bootstrappers = FindBootstrappers(packageAssemblies);
+            var bootstrappers = FindBootstrappers(packageAssemblies).ToArray();
+            Console.WriteLine("Found {0} bootstrappers".ToFormat(bootstrappers.Count()));
+            bootstrappers.Each(x => Console.WriteLine(x));
+
             return bootstrappers
                 .SelectMany(x => x.Bootstrap(log))
                 .Where(BottleService.IsBottleService)

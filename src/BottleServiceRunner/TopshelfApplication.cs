@@ -8,9 +8,9 @@ namespace BottleServiceRunner
         private TopshelfPackageFacility _facility;
 
         [SkipOverForProvenance]
-        public Bottles.Services.BottleServiceRunner Bootstrap()
+        public Bottles.Services.BottleServiceRunner Bootstrap(string[] assemblyNames)
         {
-            _facility = new TopshelfPackageFacility();
+            _facility = new TopshelfPackageFacility(assemblyNames);
 
             PackageRegistry.LoadPackages(x => x.Facility(_facility));
             return _facility.Aggregator.ServiceRunner();

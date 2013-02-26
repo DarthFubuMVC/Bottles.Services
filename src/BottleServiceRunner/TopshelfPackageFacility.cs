@@ -9,10 +9,10 @@ namespace BottleServiceRunner
     {
         private readonly BottleServiceAggregator _aggregator = new BottleServiceAggregator();
 
-        public TopshelfPackageFacility()
+        public TopshelfPackageFacility(string[] assemblyNames)
         {
             Bootstrapper(_aggregator);
-            Loader(new BottleServicePackageLoader());
+            Loader(new BottleServicePackageLoader(assemblyNames));
         }
 
         public BottleServiceAggregator Aggregator { get { return _aggregator; }}
