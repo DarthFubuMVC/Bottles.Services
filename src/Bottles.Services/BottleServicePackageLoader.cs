@@ -1,13 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Bottles;
 using Bottles.Diagnostics;
 using Bottles.PackageLoaders.Assemblies;
 using FubuCore;
 
-namespace BottleServiceRunner
+namespace Bottles.Services
 {
     public class BottleServicePackageLoader : IPackageLoader
     {
@@ -27,7 +25,7 @@ namespace BottleServiceRunner
                 DeepSearch = true
             };
 
-            var files = _fileSystem.FindFiles(TopshelfPackageFacility.GetBottlesDirectory(), assemblyNames);
+            var files = _fileSystem.FindFiles(BottlesServicePackageFacility.GetBottlesDirectory(), assemblyNames);
 
             return files.Select(AssemblyPackageInfo.For).Union(findExplicitAssemblies());
         }

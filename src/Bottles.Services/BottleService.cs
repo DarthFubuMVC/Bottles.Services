@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Bottles.Diagnostics;
+using Bottles.Services.Messaging;
+using Bottles.Services.Remote;
 using FubuCore;
 
 namespace Bottles.Services
@@ -32,6 +34,10 @@ namespace Bottles.Services
         public void Start()
         {
             _activator.Activate(new IPackageInfo[0], _log);
+            EventAggregator.SendMessage(new ServiceStarted
+            {
+                ActivatorTypeName = _activator.GetType().AssemblyQualifiedName
+            });
         }
 
         public void Stop()

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Bottles;
 using Bottles.Diagnostics;
 using Bottles.Services.Messaging;
-using Bottles.Services.Remote;
 using StructureMap;
 using StructureMap.Configuration.DSL;
 using IBootstrapper = Bottles.IBootstrapper;
@@ -16,6 +15,7 @@ namespace SampleService
         {
             ObjectFactory.Initialize(x => x.AddRegistry<SampleRegistry>());
             yield return ObjectFactory.GetInstance<SampleService>();
+            yield return ObjectFactory.GetInstance<RemoteService>();
         }
     }
 
@@ -23,16 +23,20 @@ namespace SampleService
     {
         public SampleRegistry()
         {
-            Scan(x =>
-                 {
-                     x.TheCallingAssembly();
-                     x.WithDefaultConventions();
-                 });
+            Scan(x => {
+                x.TheCallingAssembly();
+                x.WithDefaultConventions();
+            });
         }
     }
 
-    public interface IDependency { }
-    public class Dependency : IDependency { }
+    public interface IDependency
+    {
+    }
+
+    public class Dependency : IDependency
+    {
+    }
 
     public class SampleService : IActivator, IDeactivator
     {
@@ -63,48 +67,17 @@ namespace SampleService
     {
         public void Activate(IEnumerable<IPackageInfo> packages, IPackageLog log)
         {
-            EventAggregator.SendMessage(new WasStarted{Name = "RemoteService", AppDomainBase = AppDomain.CurrentDomain.BaseDirectory});
+            EventAggregator.Messaging.AddListener(this);
         }
-
 
 
         public void Deactivate(IPackageLog log)
         {
-            
         }
 
         public void Receive(TestSignal message)
         {
-            EventAggregator.SendMessage(new TestResponse{Number = message.Number});
-        }
-    }
-
-    public class WasStarted
-    {
-        public string Name { get; set; }
-        public string AppDomainBase { get; set; }
-
-        protected bool Equals(WasStarted other)
-        {
-            return string.Equals(Name, other.Name);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((WasStarted) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return (Name != null ? Name.GetHashCode() : 0);
-        }
-
-        public override string ToString()
-        {
-            return string.Format("WasStarted: {0}", Name);
+            EventAggregator.SendMessage(new TestResponse {Number = message.Number});
         }
     }
 
@@ -121,7 +94,7 @@ namespace SampleService
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((TestSignal) obj);
         }
 
@@ -149,7 +122,7 @@ namespace SampleService
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((TestResponse) obj);
         }
 

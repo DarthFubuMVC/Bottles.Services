@@ -9,10 +9,16 @@ namespace Bottles.Services.Messaging
         private static readonly BlockingCollection<object> _messages;
         private static IRemoteListener _remoteListener;
         private static CancellationTokenSource _cancellationSource;
+        private static IMessagingHub _messaging = new MessagingHub();
 
         static EventAggregator()
         {
             _messages = new BlockingCollection<object>(new ConcurrentQueue<object>());
+        }
+
+        public static IMessagingHub Messaging
+        {
+            get { return _messaging; }
         }
 
         public static void Start(IRemoteListener remoteListener)
@@ -49,9 +55,10 @@ namespace Bottles.Services.Messaging
             });
         }
 
-        public static void SendMessage(object message)
+        public static void SendMessage<T>(T message)
         {
             _messages.Add(message);
+            _messaging.Send(message);
         }
     }
 }

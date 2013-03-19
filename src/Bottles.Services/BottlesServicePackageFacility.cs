@@ -1,15 +1,13 @@
 using System;
-using Bottles;
-using Bottles.Services;
 using FubuCore;
 
-namespace BottleServiceRunner
+namespace Bottles.Services
 {
-    public class TopshelfPackageFacility : PackageFacility
+    public class BottlesServicePackageFacility : PackageFacility
     {
         private readonly BottleServiceAggregator _aggregator = new BottleServiceAggregator();
 
-        public TopshelfPackageFacility(string[] assemblyNames)
+        public BottlesServicePackageFacility(string[] assemblyNames)
         {
             Bootstrapper(_aggregator);
             Loader(new BottleServicePackageLoader(assemblyNames));

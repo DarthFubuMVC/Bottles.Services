@@ -30,11 +30,6 @@ namespace Bottles.Services.Messaging
             return null;
         }
 
-        public T WaitForMessage<T>(Action action, int wait = 5000)
-        {
-            return WaitForMessage<T>(t => true, action, wait);
-        }
-
         public T WaitForMessage<T>(Func<T, bool> filter, Action action, int wait = 5000)
         {
             var condition = new MessageWaitCondition<T>(filter);

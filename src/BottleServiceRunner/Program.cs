@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Bottles.Services;
 using FubuCore;
 using Topshelf;
 using System.Linq;
@@ -10,12 +11,12 @@ namespace BottleServiceRunner
     {
         public static void Main(params string[] args)
         {
-            var application = new TopshelfApplication();
+            var application = new BottleServiceApplication();
             var runner = application.Bootstrap(findAssemblies(args).ToArray());
 
 
 
-            var directory = TopshelfPackageFacility.GetApplicationDirectory().ToFullPath();
+            var directory = BottlesServicePackageFacility.GetApplicationDirectory().ToFullPath();
             var settings = new FileSystem().LoadFromFile<BottleServiceConfiguration>(directory,
                                                                                      BottleServiceConfiguration.FILE);
 
