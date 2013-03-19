@@ -7,7 +7,7 @@ using SampleService;
 
 namespace Bottles.Services.Tests.Remote
 {
-    [TestFixture]
+    [TestFixture, Explicit("These tests do not play nice on the build service")]
     public class BigRemoteServicesIntegrationTester
     {
         private RemoteServiceRunner start()
