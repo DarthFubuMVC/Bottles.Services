@@ -6,7 +6,16 @@ using Newtonsoft.Json;
 
 namespace Bottles.Services.Messaging
 {
-    public class MessagingHub
+    public interface IMessagingHub
+    {
+        IEnumerable<object> Listeners { get; }
+        void AddListener(object listener);
+        void RemoveListener(object listener);
+        void Send<T>(T message);
+        void SendJson(string json);
+    }
+
+    public class MessagingHub : IMessagingHub
     {
         public static string ToJson(object o)
         {
@@ -18,6 +27,7 @@ namespace Bottles.Services.Messaging
             return writer.ToString();
         }
 
+        // TODO -- need to do some locking on this bad boy
         private readonly IList<object> _listeners = new List<object>();
         private readonly JsonSerializer _jsonSerializer = new JsonSerializer()
         {

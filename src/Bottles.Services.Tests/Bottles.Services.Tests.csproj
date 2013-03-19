@@ -78,6 +78,7 @@
     <Compile Include="Messaging\EventAggregatorTester.cs" />
     <Compile Include="Messaging\MessageWaitConditionTester.cs" />
     <Compile Include="Messaging\MessagingHubTester.cs" />
+    <Compile Include="Messaging\RemoteListenerTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBootstrappers.cs" />
     <Compile Include="IntegratedBottleServiceAggregatorTester.cs" />

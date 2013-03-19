@@ -4,16 +4,25 @@ namespace Bottles.Services.Messaging
 {
     public class RemoteListener : MarshalByRefObject, IRemoteListener
     {
-        private readonly MessagingHub _listener;
+        private readonly IMessagingHub _messagingHub;
 
-        public RemoteListener(MessagingHub listener)
+        public RemoteListener(IMessagingHub messagingHub)
         {
-            _listener = listener;
+            _messagingHub = messagingHub;
         }
 
         public void Send(string json)
         {
-            _listener.SendJson(json);
+            _messagingHub.SendJson(json);
+        }
+
+        /// <summary>
+        /// Really only for testing
+        /// </summary>
+        /// <param name="message"></param>
+        public void SendObject(object message)
+        {
+            Send(MessagingHub.ToJson(message));
         }
 
         public override object InitializeLifetimeService()
@@ -21,14 +30,25 @@ namespace Bottles.Services.Messaging
             return null;
         }
 
-        public T WaitForMessage<T>(Action action)
+        public T WaitForMessage<T>(Action action, int wait = 5000)
         {
-            return WaitForMessage<T>(t => true, action);
+            return WaitForMessage<T>(t => true, action, wait);
         }
 
-        public T WaitForMessage<T>(Func<T, bool> condition, Action action)
+        public T WaitForMessage<T>(Func<T, bool> filter, Action action, int wait = 5000)
         {
-            throw new NotImplementedException();
+            var condition = new MessageWaitCondition<T>(filter);
+            _messagingHub.AddListener(condition);
+            action();
+
+            try
+            {
+                return condition.Wait();
+            }
+            finally
+            {
+                _messagingHub.RemoveListener(condition);
+            }
         }
 
     }
