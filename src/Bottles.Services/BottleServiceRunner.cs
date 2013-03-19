@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Bottles.Services
 {
@@ -20,8 +21,10 @@ namespace Bottles.Services
 
         public void Start()
         {
-            var tasks = _services.Select(x => x.ToTask());
-            tasks.Each(task => task.Start());
+            var tasks = _services.Select(x => x.ToTask()).ToArray();
+            tasks.Each(x => x.Start());
+
+            Task.WaitAll(tasks);
         }
 
         public void Stop()

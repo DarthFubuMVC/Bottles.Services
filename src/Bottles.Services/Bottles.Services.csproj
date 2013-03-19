@@ -58,6 +58,7 @@
     <Compile Include="Messaging\EventAggregator.cs" />
     <Compile Include="Messaging\IListener.cs" />
     <Compile Include="Messaging\IRemoteListener.cs" />
+    <Compile Include="Messaging\MessageWaitCondition.cs" />
     <Compile Include="Messaging\MessagingHub.cs" />
     <Compile Include="Messaging\RemoteListener.cs" />
     <Compile Include="Messaging\ServiceMessage.cs" />

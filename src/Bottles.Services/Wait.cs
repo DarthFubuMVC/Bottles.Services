@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace Bottles.Services.Embedded.Tests
+namespace Bottles.Services
 {
     public static class Wait
     {
@@ -16,7 +16,7 @@ namespace Bottles.Services.Embedded.Tests
             while (clock.ElapsedMilliseconds < timeoutInMilliseconds)
             {
                 Thread.Yield();
-                Thread.Sleep(millisecondPolling);
+                Thread.Sleep(500);
 
                 if (condition()) return;
             }

@@ -128,7 +128,6 @@
     <Compile Include="Integration\IntegratedEmbeddedServicesTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecordingService.cs" />
-    <Compile Include="Wait.cs" />
     <Compile Include="when_activating_the_bottle_service_activator.cs" />
   </ItemGroup>
   <ItemGroup>

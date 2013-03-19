@@ -24,6 +24,11 @@ namespace Bottles.Services.Messaging
             TypeNameHandling = TypeNameHandling.All
         };
 
+        public IEnumerable<object> Listeners
+        {
+            get { return _listeners; }
+        }
+
         public void AddListener(object listener)
         {
             _listeners.Add(listener);
