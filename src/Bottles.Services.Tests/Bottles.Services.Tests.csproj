@@ -37,9 +37,6 @@
     <Reference Include="FubuCore">
       <HintPath>..\packages\FubuCore.1.0.2.231\lib\FubuCore.dll</HintPath>
     </Reference>
-    <Reference Include="FubuJson">
-      <HintPath>..\packages\FubuJson.0.2.0.292\lib\net40\FubuJson.dll</HintPath>
-    </Reference>
     <Reference Include="FubuTestingSupport">
       <HintPath>..\packages\FubuTestingSupport.1.0.2.231\lib\FubuTestingSupport.dll</HintPath>
     </Reference>
@@ -78,6 +75,7 @@
     <Compile Include="BottleServiceFinderTester.cs" />
     <Compile Include="BottleServiceRunnerTester.cs" />
     <Compile Include="BottleServiceTester.cs" />
+    <Compile Include="Messaging\MessagingHubTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBootstrappers.cs" />
     <Compile Include="IntegratedBottleServiceAggregatorTester.cs" />
@@ -93,6 +91,7 @@
       <Name>Bottles.Services</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FubuJson;
+using Bottles.Services.Messaging;
 using Newtonsoft.Json;
-using System.Linq;
-using FubuCore;
 
 namespace Bottles.Services.Remote
 {
@@ -19,64 +17,11 @@ namespace Bottles.Services.Remote
      */
 
 
-    public interface IListener
-    {
-        void Receive<T>(T message);
-    }
-
-    public interface IListener<T>
-    {
-        void Receive(T message);
-    }
-
-    public class ListenerCollection
-    {
-        private readonly IList<object> _listeners = new List<object>();
-        private readonly JsonSerializer jsonSerializer = new JsonSerializer()
-        {
-            TypeNameHandling = TypeNameHandling.All
-        };
-
-        public void AddListener(object listener)
-        {
-            _listeners.Add(listener);
-        }
-
-        public void RemoveListener(object listener)
-        {
-            _listeners.Remove(listener);
-        }
-
-        public void Send<T>(T message)
-        {
-            _listeners.OfType<IListener<T>>().Each(x => x.Receive(message));
-            _listeners.OfType<IListener>().Each(x => x.Receive(message));
-        }
-
-        public void SendJson(string json)
-        {
-            var o = jsonSerializer.Deserialize(new JsonTextReader(new StringReader(json)));
-        }
-
-        public interface ISender
-        {
-            void Send(object o, ListenerCollection listeners);
-        }
-
-        public class Sender<T> : ISender
-        {
-            public void Send(object o, ListenerCollection listeners)
-            {
-                listeners.Send(o.As<T>());
-            }
-        }
-    }
-
     public class CallbackProxy : MarshalByRefObject, IRemoteListener
     {
-        private readonly ListenerCollection _listener;
+        private readonly MessagingHub _listener;
 
-        public CallbackProxy(ListenerCollection listener)
+        public CallbackProxy(MessagingHub listener)
         {
             _listener = listener;
         }
@@ -97,11 +42,6 @@ namespace Bottles.Services.Remote
     {
         private readonly IList<string> _assemblyNames = new List<string>();
         private readonly IList<string> _bootstrapperNames = new List<string>();
- 
-        public void AddAssembly(string assemblyName)
-        {
-            _assemblyNames.Add(assemblyName);
-        }
 
         public string[] Assemblies
         {
@@ -113,11 +53,6 @@ namespace Bottles.Services.Remote
             }
         }
 
-        public void AddBootstrapper(string typeName)
-        {
-            _bootstrapperNames.Add(typeName);
-        }
-
         public string[] BootstrapperNames
         {
             get { return _bootstrapperNames.ToArray(); }
@@ -127,13 +62,23 @@ namespace Bottles.Services.Remote
                 _bootstrapperNames.AddRange(value);
             }
         }
+
+        public void AddAssembly(string assemblyName)
+        {
+            _assemblyNames.Add(assemblyName);
+        }
+
+        public void AddBootstrapper(string typeName)
+        {
+            _bootstrapperNames.Add(typeName);
+        }
     }
 
     public class RemoteProxy : MarshalByRefObject
     {
         public void Start(ServicesToRun services, MarshalByRefObject remoteListener)
         {
-            ServiceListener.Start((IRemoteListener)remoteListener);
+            ServiceListener.Start((IRemoteListener) remoteListener);
 
             // TODO -- need to run the TopShelf stuff here.
         }
@@ -153,6 +98,8 @@ namespace Bottles.Services.Remote
 
     public class RemoteDomainExpression
     {
+        private readonly MessagingHub _listeners = new MessagingHub();
+
         private readonly AppDomainSetup _setup = new AppDomainSetup
         {
             ApplicationName = "Bottle-Services-AppDomain",
@@ -160,22 +107,21 @@ namespace Bottles.Services.Remote
             ConfigurationFile = "BottleServiceRunner.exe.config"
         };
 
-        private readonly ListenerCollection _listeners = new ListenerCollection();
-
         public AppDomainSetup Setup
         {
             get { return _setup; }
         }
 
         // guesses at the directory
+
+        public MessagingHub Listeners
+        {
+            get { return _listeners; }
+        }
+
         public void LoadAssemblyContainingType<T>()
         {
             throw new NotImplementedException();
-        }
-
-        public ListenerCollection Listeners
-        {
-            get { return _listeners; }
         }
     }
 
@@ -188,7 +134,7 @@ namespace Bottles.Services.Remote
             var expression = new RemoteDomainExpression();
             configure(expression);
 
-            var setup = expression.Setup;
+            AppDomainSetup setup = expression.Setup;
 
             _domain = AppDomain.CreateDomain(expression.Setup.ApplicationName, null, setup);
         }
@@ -199,12 +145,12 @@ namespace Bottles.Services.Remote
          * 
          * 
          */
+
         public void Dispose()
         {
             throw new NotImplementedException();
         }
     }
-
 
 
     public interface IRemoteListener
@@ -215,7 +161,6 @@ namespace Bottles.Services.Remote
     public static class ServiceListener
     {
         private static readonly BlockingCollection<object> _messages;
-        private static readonly IJsonSerializer _serializer = new NewtonSoftJsonSerializer(new JsonConverter[0]);
         private static IRemoteListener _remoteListener;
         private static CancellationTokenSource _cancellationSource;
         private static Task _task;
@@ -236,10 +181,10 @@ namespace Bottles.Services.Remote
 
         private static void read()
         {
-            foreach (var o in _messages.GetConsumingEnumerable(_cancellationSource.Token))
+            foreach (object o in _messages.GetConsumingEnumerable(_cancellationSource.Token))
             {
-                var json = _serializer.Serialize(o, true);
-                _remoteListener.Send(json);
+                //var json = _serializer.Serialize(o, true);
+                //_remoteListener.Send(json);
             }
         }
 
@@ -261,8 +206,6 @@ namespace Bottles.Services.Remote
         {
             _messages.Add(message);
         }
-
-
     }
 
     public class ServiceMessage

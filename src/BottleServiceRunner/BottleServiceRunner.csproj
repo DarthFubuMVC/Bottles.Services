@@ -41,9 +41,6 @@
     <Reference Include="FubuCore">
       <HintPath>..\packages\FubuCore.1.0.2.231\lib\FubuCore.dll</HintPath>
     </Reference>
-    <Reference Include="FubuJson">
-      <HintPath>..\packages\FubuJson.0.2.0.292\lib\net40\FubuJson.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
