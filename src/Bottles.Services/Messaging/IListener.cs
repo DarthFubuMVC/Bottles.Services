@@ -4,4 +4,9 @@
     {
         void Receive<T>(T message);
     }
+
+    public interface IListener<T>
+    {
+        void Receive(T message);
+    }
 }

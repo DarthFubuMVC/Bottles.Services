@@ -183,8 +183,8 @@ namespace Bottles.Services.Remote
         {
             foreach (object o in _messages.GetConsumingEnumerable(_cancellationSource.Token))
             {
-                //var json = _serializer.Serialize(o, true);
-                //_remoteListener.Send(json);
+                var json = MessagingHub.ToJson(o);
+                _remoteListener.Send(json);
             }
         }
 

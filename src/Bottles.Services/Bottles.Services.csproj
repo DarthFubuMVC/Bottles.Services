@@ -55,7 +55,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Messaging\Classes.cs" />
     <Compile Include="Messaging\IListener.cs" />
     <Compile Include="Messaging\MessagingHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

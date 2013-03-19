@@ -64,6 +64,12 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bottles.Services\Bottles.Services.csproj">
+      <Project>{6DF5C92A-94EA-4FF4-9FDD-5DE2B49A6243}</Project>
+      <Name>Bottles.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

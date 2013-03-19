@@ -90,6 +90,10 @@
       <Project>{6DF5C92A-94EA-4FF4-9FDD-5DE2B49A6243}</Project>
       <Name>Bottles.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SampleService\SampleService.csproj">
+      <Project>{EDDD686C-2DB1-411C-833F-ABAFCAE5498D}</Project>
+      <Name>SampleService</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
