@@ -63,7 +63,7 @@ namespace SampleService
     {
         public void Activate(IEnumerable<IPackageInfo> packages, IPackageLog log)
         {
-            ServiceListener.SendMessage(new WasStarted{Name = "RemoteService", AppDomainBase = AppDomain.CurrentDomain.BaseDirectory});
+            EventAggregator.SendMessage(new WasStarted{Name = "RemoteService", AppDomainBase = AppDomain.CurrentDomain.BaseDirectory});
         }
 
 
@@ -75,7 +75,7 @@ namespace SampleService
 
         public void Receive(TestSignal message)
         {
-            ServiceListener.SendMessage(new TestResponse{Number = message.Number});
+            EventAggregator.SendMessage(new TestResponse{Number = message.Number});
         }
     }
 

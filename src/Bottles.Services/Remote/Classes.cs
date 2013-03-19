@@ -17,25 +17,7 @@ namespace Bottles.Services.Remote
      */
 
 
-    public class CallbackProxy : MarshalByRefObject, IRemoteListener
-    {
-        private readonly MessagingHub _listener;
 
-        public CallbackProxy(MessagingHub listener)
-        {
-            _listener = listener;
-        }
-
-        public void Send(string json)
-        {
-            _listener.SendJson(json);
-        }
-
-        public override object InitializeLifetimeService()
-        {
-            return null;
-        }
-    }
 
     [Serializable]
     public class ServicesToRun
@@ -78,7 +60,7 @@ namespace Bottles.Services.Remote
     {
         public void Start(ServicesToRun services, MarshalByRefObject remoteListener)
         {
-            ServiceListener.Start((IRemoteListener) remoteListener);
+            EventAggregator.Start((IRemoteListener) remoteListener);
 
             // TODO -- need to run the TopShelf stuff here.
         }
@@ -153,64 +135,5 @@ namespace Bottles.Services.Remote
     }
 
 
-    public interface IRemoteListener
-    {
-        void Send(string json);
-    }
 
-    public static class ServiceListener
-    {
-        private static readonly BlockingCollection<object> _messages;
-        private static IRemoteListener _remoteListener;
-        private static CancellationTokenSource _cancellationSource;
-        private static Task _task;
-
-        static ServiceListener()
-        {
-            _messages = new BlockingCollection<object>(new ConcurrentQueue<object>());
-        }
-
-        public static void Start(IRemoteListener remoteListener)
-        {
-            _remoteListener = remoteListener;
-
-            _cancellationSource = new CancellationTokenSource();
-            _task = Task.Factory.StartNew(read, _cancellationSource.Token);
-            _task.Start();
-        }
-
-        private static void read()
-        {
-            foreach (object o in _messages.GetConsumingEnumerable(_cancellationSource.Token))
-            {
-                var json = MessagingHub.ToJson(o);
-                _remoteListener.Send(json);
-            }
-        }
-
-        public static void Stop()
-        {
-            _cancellationSource.Cancel();
-        }
-
-        public static void SendMessage(string category, string message)
-        {
-            SendMessage(new ServiceMessage
-            {
-                Category = category,
-                Message = message
-            });
-        }
-
-        public static void SendMessage(object message)
-        {
-            _messages.Add(message);
-        }
-    }
-
-    public class ServiceMessage
-    {
-        public string Category { get; set; }
-        public string Message { get; set; }
-    }
 }

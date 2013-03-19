@@ -55,14 +55,19 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Messaging\EventAggregator.cs" />
     <Compile Include="Messaging\IListener.cs" />
+    <Compile Include="Messaging\IRemoteListener.cs" />
     <Compile Include="Messaging\MessagingHub.cs" />
+    <Compile Include="Messaging\RemoteListener.cs" />
+    <Compile Include="Messaging\ServiceMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BottleService.cs" />
     <Compile Include="BottleServiceFinder.cs" />
     <Compile Include="BottleServiceRunner.cs" />
     <Compile Include="BottleServiceAggregator.cs" />
     <Compile Include="Remote\Classes.cs" />
+    <Compile Include="Wait.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
