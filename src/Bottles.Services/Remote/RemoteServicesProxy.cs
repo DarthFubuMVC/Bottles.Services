@@ -9,6 +9,9 @@ namespace Bottles.Services.Remote
 
         public void Start(ServicesToRun services, MarshalByRefObject remoteListener)
         {
+            var domainSetup = AppDomain.CurrentDomain.SetupInformation;
+            System.Environment.CurrentDirectory = domainSetup.ApplicationBase;
+             
             // TODO -- need to handle exceptions gracefully here
             EventAggregator.Start((IRemoteListener) remoteListener);
 
