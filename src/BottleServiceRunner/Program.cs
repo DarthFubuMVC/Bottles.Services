@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
 using Bottles.Services;
 using FubuCore;
 using Topshelf;
-using System.Linq;
 
 namespace BottleServiceRunner
 {
@@ -12,17 +9,15 @@ namespace BottleServiceRunner
         public static void Main(params string[] args)
         {
             var application = new BottleServiceApplication();
-            var runner = application.Bootstrap(findAssemblies(args).ToArray());
+            var runner = application.Bootstrap();
 
 
 
-            var directory = BottlesServicePackageFacility.GetApplicationDirectory().ToFullPath();
+            var directory = BottlesServicePackageFacility.GetApplicationDirectory();
             var settings = new FileSystem().LoadFromFile<BottleServiceConfiguration>(directory,
                                                                                      BottleServiceConfiguration.FILE);
 
             HostFactory.Run(x => {
-                x.ApplyCommandLine("");
-                x.AddCommandLineDefinition("assembly", s => { });
                 x.SetServiceName(settings.Name);
                 x.SetDisplayName(settings.DisplayName);
                 x.SetDescription(settings.Description);
@@ -41,21 +36,5 @@ namespace BottleServiceRunner
                 x.StartAutomatically();
             });
         }
-
-        private static IEnumerable<string> findAssemblies(IEnumerable<string> args)
-        {
-            bool useNext = false;
-            foreach (var arg in args)
-            {
-                if (useNext)
-                {
-                    yield return arg;
-
-                    
-                }
-
-                useNext = arg == "--assembly";
-            }
-        } 
     }
 }

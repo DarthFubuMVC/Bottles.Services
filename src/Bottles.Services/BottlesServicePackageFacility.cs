@@ -22,7 +22,7 @@ namespace Bottles.Services
 
         public static string GetApplicationDirectory()
         {
-            return AppDomain.CurrentDomain.BaseDirectory;
+            return AppDomain.CurrentDomain.BaseDirectory.ToFullPath();
         }
 
         public override string ToString()

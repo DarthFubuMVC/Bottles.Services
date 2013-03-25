@@ -25,7 +25,7 @@ namespace Bottles.Services
                 DeepSearch = true
             };
 
-            var files = _fileSystem.FindFiles(BottlesServicePackageFacility.GetBottlesDirectory(), assemblyNames);
+            var files = _fileSystem.FindFiles(BottlesServicePackageFacility.GetApplicationDirectory(), assemblyNames);
 
             return files.Select(AssemblyPackageInfo.For).Union(findExplicitAssemblies());
         }
