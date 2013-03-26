@@ -17,8 +17,7 @@ namespace Bottles.Services.Remote
         {
             _messagingHub.AddListener(this);
 
-            var serviceList = new ServicesToRun();
-            var expression = new RemoteDomainExpression(serviceList);
+            var expression = new RemoteDomainExpression();
             configure(expression);
 
             AppDomainSetup setup = expression.Setup;
@@ -30,7 +29,7 @@ namespace Bottles.Services.Remote
 
             _remoteListener = new RemoteListener(_messagingHub);
 
-            _proxy.Start(serviceList, _remoteListener);
+            _proxy.Start(_remoteListener);
         }
 
         public IEnumerable<ServiceStarted> Started

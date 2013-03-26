@@ -4,11 +4,15 @@ namespace Bottles.Services
     public class BottleServiceApplication
     {
         [SkipOverForProvenance]
-        public BottleServiceRunner Bootstrap(params string[] assemblyNames)
+        public BottleServiceRunner Bootstrap()
         {
-            var facility = new BottlesServicePackageFacility(assemblyNames);
+            var facility = new BottlesServicePackageFacility();
 
             PackageRegistry.LoadPackages(x => x.Facility(facility));
+
+
+            PackageRegistry.AssertNoFailures();
+
             return facility.Aggregator.ServiceRunner();
         }
     }

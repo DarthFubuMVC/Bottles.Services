@@ -49,12 +49,12 @@ namespace SampleService
 
         public void Activate(IEnumerable<IPackageInfo> packages, IPackageLog log)
         {
-            Write("Starting...");
+            Write("Starting SampleService...");
         }
 
         public void Deactivate(IPackageLog log)
         {
-            Write("Stopping...");
+            Write("Stopping SampleService...");
         }
 
         public void Write(string message)

@@ -62,11 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Bottles.Services\Bottles.Services.csproj">
       <Project>{6DF5C92A-94EA-4FF4-9FDD-5DE2B49A6243}</Project>
       <Name>Bottles.Services</Name>

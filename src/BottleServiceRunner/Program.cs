@@ -1,6 +1,9 @@
+using System;
 using Bottles.Services;
 using FubuCore;
 using Topshelf;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace BottleServiceRunner
 {
@@ -11,7 +14,14 @@ namespace BottleServiceRunner
             var application = new BottleServiceApplication();
             var runner = application.Bootstrap();
 
-
+            if (!runner.Services.Any())
+            {
+                throw new ApplicationException("No services were detected.  Shutting down.");
+            }
+            else
+            {
+                runner.Services.Each(x => Console.WriteLine("Started " + x));
+            }
 
             var directory = BottlesServicePackageFacility.GetApplicationDirectory();
             var settings = new FileSystem().LoadFromFile<BottleServiceConfiguration>(directory,

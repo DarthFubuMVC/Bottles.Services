@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Bottles.Diagnostics;
@@ -7,36 +9,93 @@ using FubuCore;
 
 namespace Bottles.Services
 {
+
+    /// <summary>
+    /// Bottles IPackageLoader that finds and loads assemblies in the application binary directory marked
+    /// with the [BottleService] attribute
+    /// </summary>
     public class BottleServicePackageLoader : IPackageLoader
     {
-        private readonly string[] _assemblyNames;
-        private readonly IFileSystem _fileSystem = new FileSystem();
-
-        public BottleServicePackageLoader(string[] assemblyNames)
-        {
-            _assemblyNames = assemblyNames;
-        }
-
         public IEnumerable<IPackageInfo> Load(IPackageLog log)
         {
-            var assemblyNames = new FileSet
+            var list = new List<string> { AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
+
+            string binPath = AppDomain.CurrentDomain.SetupInformation.PrivateBinPath;
+            if (binPath.IsNotEmpty())
             {
-                Include = "*.dll",
-                DeepSearch = true
-            };
+                if (Path.IsPathRooted(binPath))
+                {
+                    list.Add(binPath);
+                }
+                else
+                {
+                    list.Add(AppDomain.CurrentDomain.SetupInformation.ApplicationBase.AppendPath(binPath));
+                }
+            }
 
-            var files = _fileSystem.FindFiles(BottlesServicePackageFacility.GetApplicationDirectory(), assemblyNames);
+            list.Each(x =>
+            {
+                log.Trace("Looking for assemblies marked with the [FubuModule] attribute in " + x);
+            });
 
-            return files.Select(AssemblyPackageInfo.For).Union(findExplicitAssemblies());
+            return LoadPackages(list);
         }
 
-        private IEnumerable<IPackageInfo> findExplicitAssemblies()
+        public static IEnumerable<IPackageInfo> LoadPackages(List<string> list)
         {
-            foreach (var assemblyName in _assemblyNames)
+            return FindAssemblies(list)
+                .Select(assem => new AssemblyPackageInfo(assem));
+        }
+
+        public static IEnumerable<Assembly> FindAssemblies(IEnumerable<string> directories)
+        {
+            return directories.SelectMany(
+                x =>
+                AssembliesFromPath(x, assem => assem.GetCustomAttributes(typeof (BottleServiceAttribute), false).Any()));
+        }
+
+        // TODO -- this is so common here and in FubuMVC, just get something into FubuCore
+        public static IEnumerable<Assembly> AssembliesFromPath(string path, Predicate<Assembly> assemblyFilter)
+        {
+
+
+            var assemblyPaths = Directory.GetFiles(path)
+                .Where(file =>
+                       Path.GetExtension(file).Equals(
+                           ".exe",
+                           StringComparison.OrdinalIgnoreCase)
+                       ||
+                       Path.GetExtension(file).Equals(
+                           ".dll",
+                           StringComparison.OrdinalIgnoreCase));
+
+            foreach (string assemblyPath in assemblyPaths)
             {
-                var assembly = Assembly.Load(assemblyName);
-                yield return new AssemblyPackageInfo(assembly);
+                Assembly assembly =
+                    AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(
+                        x => x.GetName().Name == Path.GetFileNameWithoutExtension(assemblyPath));
+
+                if (assembly == null)
+                {
+                    try
+                    {
+                        assembly = Assembly.LoadFrom(assemblyPath);
+                    }
+                    catch
+                    {
+                    }
+                }             
+
+
+
+
+                if (assembly != null && assemblyFilter(assembly))
+                {
+                    yield return assembly;
+                }
             }
-        } 
+        }
     }
+
+
 }

@@ -1,5 +1,4 @@
 using System;
-using FubuCore;
 
 namespace Bottles.Services
 {
@@ -7,17 +6,20 @@ namespace Bottles.Services
     {
         private readonly BottleServiceAggregator _aggregator = new BottleServiceAggregator();
 
-        public BottlesServicePackageFacility(string[] assemblyNames)
+        public BottlesServicePackageFacility()
         {
             Bootstrapper(_aggregator);
-            Loader(new BottleServicePackageLoader(assemblyNames));
+            Loader(new BottleServicePackageLoader());
         }
 
-        public BottleServiceAggregator Aggregator { get { return _aggregator; }}
+        public BottleServiceAggregator Aggregator
+        {
+            get { return _aggregator; }
+        }
 
         public static string GetApplicationDirectory()
         {
-            return AppDomain.CurrentDomain.BaseDirectory.ToFullPath();
+            return AppDomain.CurrentDomain.BaseDirectory;
         }
 
         public override string ToString()

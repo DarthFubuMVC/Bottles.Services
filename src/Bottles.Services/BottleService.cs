@@ -84,5 +84,10 @@ namespace Bottles.Services
         {
             return new BottleService(service, new PackageLog());
         }
+
+        public override string ToString()
+        {
+            return string.Format("Service: {0}", _activator);
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace Bottles.Services.Remote
     {
         private BottleServiceRunner _runner;
 
-        public void Start(ServicesToRun services, MarshalByRefObject remoteListener)
+        public void Start(MarshalByRefObject remoteListener)
         {
             var domainSetup = AppDomain.CurrentDomain.SetupInformation;
             System.Environment.CurrentDirectory = domainSetup.ApplicationBase;
@@ -16,7 +16,7 @@ namespace Bottles.Services.Remote
             EventAggregator.Start((IRemoteListener) remoteListener);
 
             var application = new BottleServiceApplication();
-            _runner = application.Bootstrap(services.Assemblies);
+            _runner = application.Bootstrap();
             _runner.Start();
         }
 

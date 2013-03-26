@@ -7,7 +7,6 @@ namespace Bottles.Services.Remote
     public class RemoteDomainExpression
     {
         private readonly MessagingHub _listeners = new MessagingHub();
-        private readonly ServicesToRun _serviceList;
 
         private readonly AppDomainSetup _setup = new AppDomainSetup
         {
@@ -16,11 +15,6 @@ namespace Bottles.Services.Remote
             ConfigurationFile = "BottleServiceRunner.exe.config",
             ApplicationBase = ".".ToFullPath()
         };
-
-        public RemoteDomainExpression(ServicesToRun serviceList)
-        {
-            _serviceList = serviceList;
-        }
 
         public AppDomainSetup Setup
         {
@@ -46,7 +40,6 @@ namespace Bottles.Services.Remote
             string domainPath = AppDomain.CurrentDomain.BaseDirectory.ParentDirectory().ParentDirectory().ParentDirectory()
                                    .AppendPath(assemblyName, "bin", compileTarget);
 
-            _serviceList.AddAssembly(assemblyName);
             _setup.ApplicationBase = domainPath;
         }
     }

@@ -58,6 +58,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BottleServiceAttribute.cs" />
     <Compile Include="BottleServicePackageLoader.cs" />
     <Compile Include="Messaging\EventAggregator.cs" />
     <Compile Include="Messaging\IListener.cs" />
@@ -71,7 +72,6 @@
     <Compile Include="BottleServiceFinder.cs" />
     <Compile Include="BottleServiceRunner.cs" />
     <Compile Include="BottleServiceAggregator.cs" />
-    <Compile Include="Remote\ServicesToRun.cs" />
     <Compile Include="BottleServiceApplication.cs" />
     <Compile Include="BottlesServicePackageFacility.cs" />
     <Compile Include="Remote\RemoteDomainExpression.cs" />
@@ -79,11 +79,6 @@
     <Compile Include="Remote\RemoteServicesProxy.cs" />
     <Compile Include="Remote\ServiceStarted.cs" />
     <Compile Include="Wait.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
