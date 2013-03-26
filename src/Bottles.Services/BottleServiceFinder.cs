@@ -11,7 +11,7 @@ namespace Bottles.Services
     {
         public static IEnumerable<IBootstrapper> FindBootstrappers(IEnumerable<Assembly> packageAssemblies)
         {
-            var bootstrappers = packageAssemblies.FilterTypes(type => type.CanBeCastTo<IBootstrapper>() && type.IsConcreteWithDefaultCtor());
+            var bootstrappers = packageAssemblies.FilterTypes(type => type.CanBeCastTo<IBootstrapper>() && type.IsConcreteWithDefaultCtor() && type != typeof(BottleServiceAggregator));
             return bootstrappers.Select(x => (IBootstrapper) Activator.CreateInstance(x));
         }
 

@@ -15,11 +15,6 @@ namespace Bottles.Services
 
         public BottleServiceAggregator Aggregator { get { return _aggregator; }}
 
-        public static string GetBottlesDirectory()
-        {
-            return FileSystem.Combine(GetApplicationDirectory(), BottleFiles.BottlesFolder);
-        }
-
         public static string GetApplicationDirectory()
         {
             return AppDomain.CurrentDomain.BaseDirectory.ToFullPath();
