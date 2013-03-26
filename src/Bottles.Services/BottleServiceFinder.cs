@@ -11,6 +11,8 @@ namespace Bottles.Services
     {
         public static IEnumerable<IBootstrapper> FindBootstrappers(IEnumerable<Assembly> packageAssemblies)
         {
+	        packageAssemblies.Each(a => Caveman.Log("Assembly:  " + a.GetName().Name));
+
             var bootstrappers = packageAssemblies.FilterTypes(type => type.CanBeCastTo<IBootstrapper>() && type.IsConcreteWithDefaultCtor() && type != typeof(BottleServiceAggregator));
             return bootstrappers.Select(x => (IBootstrapper) Activator.CreateInstance(x));
         }
@@ -19,7 +21,11 @@ namespace Bottles.Services
         {
             var bootstrappers = FindBootstrappers(packageAssemblies).ToArray();
             Console.WriteLine("Found {0} bootstrappers".ToFormat(bootstrappers.Count()));
-            bootstrappers.Each(x => Console.WriteLine(x));
+            bootstrappers.Each(x =>
+	            {
+		            Console.WriteLine(x);
+					Caveman.Log("Found the bootstrapper:  " + x);
+	            });
 
             return bootstrappers
                 .SelectMany(x => x.Bootstrap(log))

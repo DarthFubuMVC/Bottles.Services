@@ -31,13 +31,21 @@ namespace Bottles.Services
             }
         }
 
-        public void Start()
+	    public IActivator Activator
+	    {
+		    get { return _activator; }
+	    }
+
+	    public void Start()
         {
             _activator.Activate(new IPackageInfo[0], _log);
+			Caveman.Log("Trying to send to EA");
             EventAggregator.SendMessage(new ServiceStarted
             {
                 ActivatorTypeName = _activator.GetType().AssemblyQualifiedName
             });
+
+			Caveman.Log("HAve sent to EventAggregator");
         }
 
         public void Stop()

@@ -16,7 +16,7 @@ namespace Bottles.Services.Remote
             EventAggregator.Start((IRemoteListener) remoteListener);
 
             var application = new BottleServiceApplication();
-            _runner = application.Bootstrap(services.Assemblies);
+            _runner = application.Bootstrap();
             _runner.Start();
         }
 

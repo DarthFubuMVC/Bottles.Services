@@ -7,18 +7,26 @@ namespace Bottles.Services
     {
         private readonly BottleServiceAggregator _aggregator = new BottleServiceAggregator();
 
-        public BottlesServicePackageFacility(string[] assemblyNames)
+        public BottlesServicePackageFacility()
         {
+			Caveman.Log("Adding bootstrapper");
             Bootstrapper(_aggregator);
-            Loader(new BottleServicePackageLoader(assemblyNames));
+			Caveman.Log("Adding package loader");
+            Loader(new BottleServicePackageLoader());
+			Caveman.Log("Able to add package loader");
         }
 
         public BottleServiceAggregator Aggregator { get { return _aggregator; }}
 
         public static string GetApplicationDirectory()
         {
-            return AppDomain.CurrentDomain.BaseDirectory.ToFullPath();
+	        return AppDomain.CurrentDomain.BaseDirectory;
         }
+
+		public static string GetBottlesDirectory()
+		{
+			return GetApplicationDirectory().AppendPath("bottles");
+		}
 
         public override string ToString()
         {

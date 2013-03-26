@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Bottles;
 using Bottles.Services;
 using FubuCore;
 using Topshelf;
@@ -10,14 +15,14 @@ namespace BottleServiceRunner
         {
             var application = new BottleServiceApplication();
             var runner = application.Bootstrap();
+			Caveman.Log("Got the runner");
+			var directory = BottlesServicePackageFacility.GetApplicationDirectory();
 
-
-
-            var directory = BottlesServicePackageFacility.GetApplicationDirectory();
+            
             var settings = new FileSystem().LoadFromFile<BottleServiceConfiguration>(directory,
                                                                                      BottleServiceConfiguration.FILE);
-
-            HostFactory.Run(x => {
+			Caveman.Log("Starting TopShelf stuff");
+			HostFactory.Run(x => {
                 x.SetServiceName(settings.Name);
                 x.SetDisplayName(settings.DisplayName);
                 x.SetDescription(settings.Description);
