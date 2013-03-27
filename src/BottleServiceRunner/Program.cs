@@ -12,6 +12,7 @@ namespace BottleServiceRunner
         public static void Main(params string[] args)
         {
             var application = new BottleServiceApplication();
+            
             var runner = application.Bootstrap();
 
             if (!runner.Services.Any())
@@ -20,19 +21,30 @@ namespace BottleServiceRunner
             }
             else
             {
-                runner.Services.Each(x => Console.WriteLine("Started " + x));
+                runner.Services.Each(x => {
+                    Console.WriteLine("Started " + x);
+                });
             }
 
+
             var directory = BottlesServicePackageFacility.GetApplicationDirectory();
+            
             var settings = new FileSystem().LoadFromFile<BottleServiceConfiguration>(directory,
                                                                                      BottleServiceConfiguration.FILE);
+            
 
+            RunService(settings, runner);
+        }
+
+        public static void RunService(BottleServiceConfiguration settings, Bottles.Services.BottleServiceRunner runner)
+        {
             HostFactory.Run(x => {
                 x.SetServiceName(settings.Name);
                 x.SetDisplayName(settings.DisplayName);
                 x.SetDescription(settings.Description);
 
                 x.RunAsLocalService();
+
 
                 x.Service<Bottles.Services.BottleServiceRunner>(s => {
                     s.ConstructUsing(name => runner);
