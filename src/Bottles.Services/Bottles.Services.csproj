@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="BottleServiceAttribute.cs" />
     <Compile Include="BottleServicePackageLoader.cs" />
+    <Compile Include="BottleServiceRuntime.cs" />
     <Compile Include="Messaging\EventAggregator.cs" />
     <Compile Include="Messaging\IListener.cs" />
     <Compile Include="Messaging\IRemoteListener.cs" />

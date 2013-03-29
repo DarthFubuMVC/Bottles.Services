@@ -24,7 +24,7 @@ namespace Bottles.Services
 
         public override string ToString()
         {
-            return "Topshelf Package Facility";
+            return "BottleServicePackageFacility";
         }
     }
 }
