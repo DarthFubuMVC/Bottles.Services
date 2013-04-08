@@ -1,12 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Bottles.Services.Messaging;
 using FubuCore;
 
 namespace Bottles.Services.Remote
 {
-    public class RemoteDomainExpression
+    public interface IAssemblyMover
     {
+        void MoveAssemblies(AppDomainSetup setup);
+    }
+
+    public class RemoteDomainExpression : IAssemblyMover
+    {
+        private readonly static FileSystem fileSystem = new FileSystem();
         private readonly MessagingHub _listeners = new MessagingHub();
+        private readonly IList<AssemblyRequirement> _requirements = new List<AssemblyRequirement>(); 
 
         private readonly AppDomainSetup _setup = new AppDomainSetup
         {
@@ -24,7 +33,15 @@ namespace Bottles.Services.Remote
         public string ServiceDirectory
         {
             get { return _setup.ApplicationBase; }
-            set { _setup.ApplicationBase = value; }
+            set
+            {
+                _setup.ApplicationBase = value;
+
+                if (fileSystem.DirectoryExists(value, "bin"))
+                {
+                    _setup.PrivateBinPath = "bin";
+                }
+            }
         }
 
         // guesses at the directory
@@ -34,6 +51,12 @@ namespace Bottles.Services.Remote
             get { return _listeners; }
         }
 
+        /// <summary>
+        /// This is primarily used in development and testing scenarios to remotely run
+        /// a service in a parallel project.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="compileTarget"></param>
         public void LoadAssemblyContainingType<T>(string compileTarget = "Debug")
         {
             string assemblyName = typeof (T).Assembly.GetName().Name;
@@ -41,6 +64,34 @@ namespace Bottles.Services.Remote
                                    .AppendPath(assemblyName, "bin", compileTarget);
 
             _setup.ApplicationBase = domainPath;
+        }
+
+        public void RequireAssembly(string name)
+        {
+            _requirements.Add(new AssemblyRequirement(name));
+        }
+
+        public void RequireAssemblyContainingType<T>()
+        {
+            _requirements.Add(new AssemblyRequirement(typeof(T).Assembly));
+        }
+
+        void IAssemblyMover.MoveAssemblies(AppDomainSetup setup)
+        {
+            var binaryPath = setup.ApplicationBase;
+            if (setup.PrivateBinPath.IsNotEmpty())
+            {
+                if (Path.IsPathRooted(setup.PrivateBinPath))
+                {
+                    binaryPath = setup.PrivateBinPath;
+                }
+                else
+                {
+                    binaryPath = setup.ApplicationBase.AppendPath(setup.PrivateBinPath);
+                }
+            }
+
+            _requirements.Each(x => x.Move(binaryPath));
         }
     }
 }

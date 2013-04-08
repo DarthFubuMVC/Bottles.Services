@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Bottles.Services.Messaging;
+using FubuCore;
 
 namespace Bottles.Services.Remote
 {
@@ -23,6 +25,12 @@ namespace Bottles.Services.Remote
             AppDomainSetup setup = expression.Setup;
 
             _domain = AppDomain.CreateDomain(expression.Setup.ApplicationName, null, setup);
+
+
+
+            expression.As<IAssemblyMover>().MoveAssemblies(setup);
+
+
             Type proxyType = typeof (RemoteServicesProxy);
             _proxy = (RemoteServicesProxy)
                      _domain.CreateInstanceAndUnwrap(proxyType.Assembly.FullName, proxyType.FullName);

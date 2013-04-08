@@ -1,9 +1,11 @@
-﻿using System.Threading;
+﻿using System.IO;
+using System.Threading;
 using Bottles.Services.Remote;
 using NUnit.Framework;
 using System.Linq;
 using FubuTestingSupport;
 using SampleService;
+using FubuCore;
 
 namespace Bottles.Services.Tests.Remote
 {
@@ -12,7 +14,10 @@ namespace Bottles.Services.Tests.Remote
     {
         private RemoteServiceRunner start()
         {
-            return new RemoteServiceRunner(x => x.LoadAssemblyContainingType<SampleService.SampleService>());
+            return new RemoteServiceRunner(x => {
+                x.LoadAssemblyContainingType<SampleService.SampleService>();
+                x.RequireAssemblyContainingType<BigRemoteServicesIntegrationTester>(); // This is mostly a smoke test
+            });
         }
 
         [Test]

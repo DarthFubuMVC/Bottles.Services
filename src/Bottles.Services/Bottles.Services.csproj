@@ -75,6 +75,7 @@
     <Compile Include="BottleServiceAggregator.cs" />
     <Compile Include="BottleServiceApplication.cs" />
     <Compile Include="BottlesServicePackageFacility.cs" />
+    <Compile Include="Remote\AssemblyRequirement.cs" />
     <Compile Include="Remote\RemoteDomainExpression.cs" />
     <Compile Include="Remote\RemoteServiceRunner.cs" />
     <Compile Include="Remote\RemoteServicesProxy.cs" />
