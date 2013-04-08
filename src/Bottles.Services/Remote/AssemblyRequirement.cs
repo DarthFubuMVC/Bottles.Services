@@ -24,9 +24,18 @@ namespace Bottles.Services.Remote
             var location = _assembly.Location;
 
             var fileName = Path.GetFileName(location);
-            if (fileSystem.FileExists(directory.AppendPath(fileName))) return;
 
-            fileSystem.CopyToDirectory(location, directory);
+
+
+            if (!fileSystem.FileExists(directory.AppendPath(fileName)))
+            {
+                fileSystem.CopyToDirectory(location, directory);
+            }
+
+
+
+            var pdb = Path.GetFileNameWithoutExtension(fileName) + ".pdb";
+            fileSystem.CopyToDirectory(location.ParentDirectory().AppendPath(pdb), directory);
         }
     }
 }
