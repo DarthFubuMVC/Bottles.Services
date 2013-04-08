@@ -21,6 +21,18 @@ namespace Bottles.Services.Tests.Remote
         }
 
         [Test]
+        public void run_a_specific_bootstrapper()
+        {
+            using (var runner = RemoteServiceRunner.For<SampleBootstrapper>())
+            {
+                runner.WaitForServiceToStart<SampleService.SampleService>();
+                runner.WaitForServiceToStart<SampleService.RemoteService>();
+
+                runner.Started.Any().ShouldBeTrue(); 
+            }
+        }
+
+        [Test]
         public void spin_up_the_remote_service_for_the_sample_and_send_messages_back_and_forth()
         {
             using (var runner = start())

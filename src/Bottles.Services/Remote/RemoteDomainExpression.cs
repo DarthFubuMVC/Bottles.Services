@@ -51,6 +51,8 @@ namespace Bottles.Services.Remote
             get { return _listeners; }
         }
 
+        public string BootstrapperName { get; set; }
+
         /// <summary>
         /// This is primarily used in development and testing scenarios to remotely run
         /// a service in a parallel project.

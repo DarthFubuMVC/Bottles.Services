@@ -1,5 +1,6 @@
 ﻿using System;
 using Bottles.Services.Messaging;
+using FubuCore;
 
 namespace Bottles.Services.Remote
 {
@@ -7,7 +8,7 @@ namespace Bottles.Services.Remote
     {
         private BottleServiceRunner _runner;
 
-        public void Start(MarshalByRefObject remoteListener)
+        public void Start(string bootstrapperName, MarshalByRefObject remoteListener)
         {
             var domainSetup = AppDomain.CurrentDomain.SetupInformation;
             System.Environment.CurrentDirectory = domainSetup.ApplicationBase;
@@ -16,11 +17,9 @@ namespace Bottles.Services.Remote
             EventAggregator.Start((IRemoteListener) remoteListener);
 
             var application = new BottleServiceApplication();
-            _runner = application.Bootstrap();
+            _runner = application.Bootstrap(bootstrapperName);
             _runner.Start();
         }
-
-        // TODO -- send messages to the remote service???
 
         public void Shutdown()
         {

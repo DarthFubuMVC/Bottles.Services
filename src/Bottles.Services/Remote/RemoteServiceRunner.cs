@@ -17,11 +17,12 @@ namespace Bottles.Services.Remote
 
         public RemoteServiceRunner(Action<RemoteDomainExpression> configure)
         {
-            _messagingHub.AddListener(this);
+            
 
             var expression = new RemoteDomainExpression();
             configure(expression);
 
+            _messagingHub.AddListener(this);
             AppDomainSetup setup = expression.Setup;
 
             _domain = AppDomain.CreateDomain(expression.Setup.ApplicationName, null, setup);
@@ -37,7 +38,8 @@ namespace Bottles.Services.Remote
 
             _remoteListener = new RemoteListener(_messagingHub);
 
-            _proxy.Start(_remoteListener);
+
+            _proxy.Start(expression.BootstrapperName, _remoteListener);
         }
 
         public IEnumerable<ServiceStarted> Started
@@ -80,6 +82,19 @@ namespace Bottles.Services.Remote
         public T WaitForMessage<T>(Func<T, bool> filter, Action action, int wait = 5000)
         {
             return _remoteListener.WaitForMessage(filter, action, wait);
+        }
+
+        public static RemoteServiceRunner For<T>(Action<RemoteDomainExpression> configure = null) where T : IBootstrapper
+        {
+            if (configure == null)
+            {
+                configure = x => { };
+            }
+
+            return new RemoteServiceRunner(x => {
+                configure(x);
+                x.BootstrapperName = typeof (T).AssemblyQualifiedName;
+            });
         }
     }
 }
