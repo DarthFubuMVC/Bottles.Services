@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace Bottles.Services.Messaging
         private static readonly BlockingCollection<object> _messages;
         private static IRemoteListener _remoteListener;
         private static CancellationTokenSource _cancellationSource;
-        private static IMessagingHub _messaging = new MessagingHub();
+        private static readonly IMessagingHub _messaging = new MessagingHub();
 
         static EventAggregator()
         {

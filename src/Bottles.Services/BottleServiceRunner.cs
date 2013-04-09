@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bottles.Services.Messaging;
 
 namespace Bottles.Services
 {
@@ -22,6 +23,8 @@ namespace Bottles.Services
         public void Start()
         {
             var tasks = _services.Select(x => x.ToTask()).ToArray();
+
+            _services.Each(x => EventAggregator.Messaging.AddListener(x));
             tasks.Each(x => x.Start());
 
             Task.WaitAll(tasks);
