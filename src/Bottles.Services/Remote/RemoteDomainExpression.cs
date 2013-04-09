@@ -41,10 +41,29 @@ namespace Bottles.Services.Remote
                 {
                     _setup.PrivateBinPath = "bin";
                 }
+
+                if (fileSystem.DirectoryExists(value, "bin", "Debug"))
+                {
+                    _setup.PrivateBinPath = "bin".AppendPath("Debug");
+                }
+
+
             }
         }
 
-        // guesses at the directory
+        /// <summary>
+        /// Use to force the selection of bin/Debug or bin/Release for the private bin path of the remote AppDomain
+        /// </summary>
+        public string BuildProfile
+        {
+            set
+            {
+                if (fileSystem.DirectoryExists(_setup.ApplicationBase, "bin", value))
+                {
+                    _setup.PrivateBinPath = "bin".AppendPath(value);
+                }
+            }
+        }
 
         public MessagingHub Listeners
         {
