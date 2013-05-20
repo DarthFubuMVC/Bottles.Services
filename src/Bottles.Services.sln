@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bottles.Services.Embedded",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bottles.Services.Embedded.Tests", "Bottles.Services.Embedded.Tests\Bottles.Services.Embedded.Tests.csproj", "{1A7BEDB9-B9A4-4880-93B0-96F19637A4E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bottles.Services.Docs", "Bottles.Services.Docs\Bottles.Services.Docs.csproj", "{D8BBD9BF-2ADA-4587-96F4-AE10D7743E34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,16 @@ Global
 		{1A7BEDB9-B9A4-4880-93B0-96F19637A4E9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1A7BEDB9-B9A4-4880-93B0-96F19637A4E9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1A7BEDB9-B9A4-4880-93B0-96F19637A4E9}.Release|x86.ActiveCfg = Release|Any CPU
+		{D8BBD9BF-2ADA-4587-96F4-AE10D7743E34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8BBD9BF-2ADA-4587-96F4-AE10D7743E34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8BBD9BF-2ADA-4587-96F4-AE10D7743E34}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D8BBD9BF-2ADA-4587-96F4-AE10D7743E34}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D8BBD9BF-2ADA-4587-96F4-AE10D7743E34}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D8BBD9BF-2ADA-4587-96F4-AE10D7743E34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8BBD9BF-2ADA-4587-96F4-AE10D7743E34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8BBD9BF-2ADA-4587-96F4-AE10D7743E34}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D8BBD9BF-2ADA-4587-96F4-AE10D7743E34}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D8BBD9BF-2ADA-4587-96F4-AE10D7743E34}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<ProjectRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <TagLine>A member of the Fubu family of projects</TagLine>
+  <Name>Bottles.Services</Name>
+  <GitHubPage>http://github.com/DarthFubuMVC/Bottles.Services</GitHubPage>
+  <UserGroupUrl>https://groups.google.com/forum/?fromgroups#!forum/fubumvc-devel</UserGroupUrl>
+  <BuildServerUrl>http://build.fubu-project.org/project.html?projectId=project48&amp;tab=projectOverview</BuildServerUrl>
+  <BottleName>Bottles.Services.Docs</BottleName>
+  <TeamCityBuildType>bt84</TeamCityBuildType>
+  <Nugets>
+    <PublishedNuget>
+      <Name>Bottles.Services.Embedded</Name>
+      <Description>Run your Bottle services embedded</Description>
+    </PublishedNuget>
+    <PublishedNuget>
+      <Name>Bottles.Services</Name>
+      <Description>Bottle services</Description>
+    </PublishedNuget>
+    <PublishedNuget>
+      <Name>BottleServiceRunner</Name>
+      <Description>Topshelf host for Bottles</Description>
+    </PublishedNuget>
+  </Nugets>
+  <Url>bottles.services</Url>
+</ProjectRoot>
