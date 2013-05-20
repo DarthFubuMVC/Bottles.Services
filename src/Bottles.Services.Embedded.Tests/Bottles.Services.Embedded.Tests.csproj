@@ -131,11 +131,6 @@
     <Compile Include="when_activating_the_bottle_service_activator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Bottles.Services.Embedded\Bottles.Services.Embedded.csproj">
       <Project>{1D303847-6E6A-4F60-91AA-5EE89341E2B3}</Project>
       <Name>Bottles.Services.Embedded</Name>

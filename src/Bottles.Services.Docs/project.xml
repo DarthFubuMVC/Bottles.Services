@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ProjectRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <TagLine>A member of the Fubu family of projects</TagLine>
+  <TagLine>Easy creation of windows services with Bottles and TopShelf</TagLine>
   <Name>Bottles.Services</Name>
   <GitHubPage>http://github.com/DarthFubuMVC/Bottles.Services</GitHubPage>
   <UserGroupUrl>https://groups.google.com/forum/?fromgroups#!forum/fubumvc-devel</UserGroupUrl>
