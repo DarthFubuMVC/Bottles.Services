@@ -6,15 +6,6 @@ using Newtonsoft.Json;
 
 namespace Bottles.Services.Messaging
 {
-    public interface IMessagingHub
-    {
-        IEnumerable<object> Listeners { get; }
-        void AddListener(object listener);
-        void RemoveListener(object listener);
-        void Send<T>(T message);
-        void SendJson(string json);
-    }
-
     public class MessagingHub : IMessagingHub
     {
         public static string ToJson(object o)

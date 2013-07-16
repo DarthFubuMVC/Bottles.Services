@@ -63,11 +63,13 @@
     <Compile Include="BottleServiceRuntime.cs" />
     <Compile Include="Messaging\EventAggregator.cs" />
     <Compile Include="Messaging\IListener.cs" />
+    <Compile Include="Messaging\IMessagingHub.cs" />
     <Compile Include="Messaging\IRemoteListener.cs" />
     <Compile Include="Messaging\MessageWaitCondition.cs" />
     <Compile Include="Messaging\MessagingHub.cs" />
     <Compile Include="Messaging\RemoteListener.cs" />
     <Compile Include="Messaging\ServiceMessage.cs" />
+    <Compile Include="Messaging\Tracking\TrackingClasses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BottleService.cs" />
     <Compile Include="BottleServiceFinder.cs" />

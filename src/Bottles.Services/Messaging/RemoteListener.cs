@@ -32,18 +32,7 @@ namespace Bottles.Services.Messaging
 
         public T WaitForMessage<T>(Func<T, bool> filter, Action action, int wait = 5000)
         {
-            var condition = new MessageWaitCondition<T>(filter);
-            _messagingHub.AddListener(condition);
-            action();
-
-            try
-            {
-                return condition.Wait();
-            }
-            finally
-            {
-                _messagingHub.RemoveListener(condition);
-            }
+            return _messagingHub.WaitForMessage(filter, action, wait);
         }
 
     }
