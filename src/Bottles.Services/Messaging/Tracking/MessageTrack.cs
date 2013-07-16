@@ -4,11 +4,6 @@ using FubuCore;
 
 namespace Bottles.Services.Messaging.Tracking
 {
-    public static class MessageHistory
-    {
-        
-    }
-
     public class MessageTrack
     {
         public static readonly string Sent = "Sent";
@@ -45,7 +40,7 @@ namespace Bottles.Services.Messaging.Tracking
 
         private static void autodetermineId(object message, Type messageType, MessageTrack track)
         {
-            var property = messageType.GetProperties().FirstOrDefault(x => x.Name.EqualsIgnoreCase("Id"));
+            var property = messageType.GetProperties().FirstOrDefault(x => FubuCore.StringExtensions.EqualsIgnoreCase(x.Name, "Id"));
             if (property != null)
             {
                 var rawValue = property.GetValue(message, null);
@@ -71,7 +66,25 @@ namespace Bottles.Services.Messaging.Tracking
 
         public string Status { get; set; }
 
-        
-    }
+        protected bool Equals(MessageTrack other)
+        {
+            return string.Equals(FullName, other.FullName) && string.Equals(Id, other.Id);
+        }
 
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((MessageTrack) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((FullName != null ? FullName.GetHashCode() : 0)*397) ^ (Id != null ? Id.GetHashCode() : 0);
+            }
+        }
+    }
 }
