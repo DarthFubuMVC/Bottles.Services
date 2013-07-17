@@ -67,6 +67,7 @@
     <Compile Include="Messaging\IRemoteListener.cs" />
     <Compile Include="Messaging\MessageWaitCondition.cs" />
     <Compile Include="Messaging\MessagingHub.cs" />
+    <Compile Include="Messaging\MessagingHubExtensions.cs" />
     <Compile Include="Messaging\RemoteListener.cs" />
     <Compile Include="Messaging\ServiceMessage.cs" />
     <Compile Include="Messaging\Tracking\AllMessagesComplete.cs" />
