@@ -1,14 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Bottles;
 using Bottles.Diagnostics;
 using Bottles.Services.Messaging;
 using StructureMap;
 using StructureMap.Configuration.DSL;
 using IBootstrapper = Bottles.IBootstrapper;
+using Bottles.Services.Messaging.Tracking;
 
 namespace SampleService
 {
+    public class Foo
+    {
+        public Foo()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        public Guid Id { get; set; }
+    }
+
     public class SampleBootstrapper : IBootstrapper
     {
         public IEnumerable<IActivator> Bootstrap(IPackageLog log)
@@ -38,7 +51,7 @@ namespace SampleService
     {
     }
 
-    public class SampleService : IActivator, IDeactivator
+    public class SampleService : IActivator, IDeactivator, IListener<Foo>
     {
         private readonly IDependency _dependency;
 
@@ -50,6 +63,8 @@ namespace SampleService
         public void Activate(IEnumerable<IPackageInfo> packages, IPackageLog log)
         {
             Write("Starting SampleService...");
+
+            EventAggregator.Messaging.AddListener(this);
         }
 
         public void Deactivate(IPackageLog log)
@@ -60,6 +75,14 @@ namespace SampleService
         public void Write(string message)
         {
             Console.WriteLine("From {0}: {1}", GetType().Name, message);
+        }
+
+        public void Receive(Foo message)
+        {
+            Task.Factory.StartNew(() => {
+                Thread.Sleep(500);
+                EventAggregator.ReceivedMessage(message);
+            });
         }
     }
 

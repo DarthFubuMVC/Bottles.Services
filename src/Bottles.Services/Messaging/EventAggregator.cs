@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
+using Bottles.Services.Messaging.Tracking;
 
 namespace Bottles.Services.Messaging
 {
@@ -60,6 +61,16 @@ namespace Bottles.Services.Messaging
         {
             _messages.Add(message);
             _messaging.Send(message);
+        }
+
+        public static void ReceivedMessage(object message)
+        {
+            SendMessage(MessageTrack.ForReceived(message));
+        }
+
+        public static void SentMessage(object message)
+        {
+            SendMessage(MessageTrack.ForSent(message));
         }
     }
 }

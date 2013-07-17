@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Bottles.Services.Remote;
 using FubuCore;
 
 namespace Bottles.Services.Messaging.Tracking
@@ -12,6 +13,21 @@ namespace Bottles.Services.Messaging.Tracking
         private readonly static IList<MessageTrack> _outstanding = new List<MessageTrack>();
         
         private readonly static ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+        private static MessageTrackListener _listener;
+
+        private static IList<IMessagingHub> _hubs = new List<IMessagingHub>(); 
+
+        public static void StartListening(params RemoteServiceRunner[] runners)
+        {
+            ClearAll();
+
+            _hubs.Clear();
+            _hubs.AddRange(runners.Select(x => x.Messaging));
+            _hubs.Add(EventAggregator.Messaging);
+            _listener = new MessageTrackListener();
+
+            _hubs.Each(x => x.AddListener(_listener));
+        }
 
         public static void ClearAll()
         {
@@ -20,6 +36,14 @@ namespace Bottles.Services.Messaging.Tracking
                 _received.Clear();
                 _outstanding.Clear();
             });
+
+            if (_listener != null)
+            {
+                _hubs.Each(x => { if (_listener != null) x.RemoveListener(_listener); });
+                
+            }
+
+            _hubs.Clear();
         }
 
         public static void Record(MessageTrack track)
@@ -62,7 +86,16 @@ namespace Bottles.Services.Messaging.Tracking
         public static IEnumerable<MessageTrack> All()
         {
             return _lock.Read(() => _sent.Union(_received).ToList());
-        } 
+        }
 
+
+
+        public class MessageTrackListener : IListener<MessageTrack>
+        {
+            public void Receive(MessageTrack message)
+            {
+                Record(message);
+            }
+        }
     }
 }

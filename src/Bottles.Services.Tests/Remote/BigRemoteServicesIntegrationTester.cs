@@ -1,11 +1,13 @@
 ﻿using System.IO;
 using System.Threading;
+using Bottles.Services.Messaging;
 using Bottles.Services.Remote;
 using NUnit.Framework;
 using System.Linq;
 using FubuTestingSupport;
 using SampleService;
 using FubuCore;
+using Bottles.Services.Messaging.Tracking;
 
 namespace Bottles.Services.Tests.Remote
 {
@@ -29,6 +31,29 @@ namespace Bottles.Services.Tests.Remote
                 runner.WaitForServiceToStart<SampleService.RemoteService>();
 
                 runner.Started.Any().ShouldBeTrue(); 
+            }
+        }
+
+        [Test]
+        public void coordinate_message_history_via_remote_service()
+        {
+            
+
+            using (var runner = RemoteServiceRunner.For<SampleBootstrapper>())
+            {
+                runner.WaitForServiceToStart<SampleService.SampleService>();
+                runner.WaitForServiceToStart<SampleService.RemoteService>();
+
+                MessageHistory.StartListening(runner);
+
+                var foo = new Foo();
+
+                EventAggregator.SentMessage(foo);
+
+
+                EventAggregator.Messaging.WaitForMessage<AllMessagesComplete>(() => runner.SendRemotely(foo), 60000)
+                                   .ShouldNotBeNull();
+
             }
         }
 

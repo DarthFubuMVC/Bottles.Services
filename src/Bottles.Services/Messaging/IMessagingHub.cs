@@ -22,7 +22,7 @@ namespace Bottles.Services.Messaging
 
             try
             {
-                return condition.Wait();
+                return condition.Wait(wait);
             }
             finally
             {
