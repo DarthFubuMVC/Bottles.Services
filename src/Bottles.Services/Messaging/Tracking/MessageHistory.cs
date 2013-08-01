@@ -15,7 +15,7 @@ namespace Bottles.Services.Messaging.Tracking
         private readonly static ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
         private static MessageTrackListener _listener;
 
-        private static IList<IMessagingHub> _hubs = new List<IMessagingHub>(); 
+        private static readonly IList<IMessagingHub> _hubs = new List<IMessagingHub>(); 
 
         public static void StartListening(params RemoteServiceRunner[] runners)
         {
